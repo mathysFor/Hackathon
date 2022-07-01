@@ -123,15 +123,13 @@ router.post('/go',async function(req, res, next) {
   var newDate = new Date(req.body.date)
   var journeysList = await JourneyModel.find() ;
   var journeyDispo = [];
-
-  
+  var day = newDate.getDate()
+  var month = newDate.getMonth() + 1
+  var exist = false
 
    for (let i = 0; i < journeysList.length; i++) {
 
-
-
    if(req.body.to.toLowerCase() == journeysList[i].arrival.toLowerCase()  && req.body.from.toLowerCase()  == journeysList[i].departure.toLowerCase() && Date.parse(newDate) ==  Date.parse(journeysList[i].date)  ){
-
 
     journeyDispo.push(
       {
@@ -142,23 +140,30 @@ router.post('/go',async function(req, res, next) {
         price: journeysList[i].price,
       }
     ) 
-
+    exist = true
      }
-  
  }
 
+ if(exist == false){
+  
+  res.render('noTrain');
 
-    res.render('journey', {journeyDispo});
+ }
+
+ res.render('availableTicket', {journeyDispo , day , month});
+
+
+
   });
 
 
 
   //************************************************************************************
 
-//----------------------------- Route Ajout Journeys to users Billet ----------------------------------
+//----------------------------- Route Ajout Journeys to users  ----------------------------------
 
 
-router.post('/go',async function(req, res, next) {
+router.post('#confirm',async function(req, res, next) {
 
 
   var newDate = new Date(req.body.date)
@@ -190,7 +195,20 @@ router.post('/go',async function(req, res, next) {
  
  await UserModel.findOneAndUpdate({_id:req.session.user._id} , user) ;
 
-    res.render('home');
+    res.render('#');
+  });
+
+
+
+router.get('/lastrips',async function(req, res, next) {
+
+  console.log(req.session.user._id);
+
+  var user = await UserModel.findById({_id:req.session.user._id}) ;
+
+  console.log(user);
+  
+    res.render('lastrips',{user});
   });
 
 module.exports = router;
