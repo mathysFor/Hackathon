@@ -1,8 +1,9 @@
 body {
-  padding: 50px;
+  height: 100vh;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-}
+  background: linear-gradient(to top,
+  #4194C8, #7EB2D1, #C4DDE8);
+  
+};
 
-a {
-  color: #00B7FF;
-}
+
