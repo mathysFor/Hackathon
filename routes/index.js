@@ -123,6 +123,7 @@ router.post('/go',async function(req, res, next) {
   var newDate = new Date(req.body.date)
   var journeysList = await JourneyModel.find() ;
   var journeyDispo = [];
+  var exist = false
 
   
 
@@ -142,13 +143,18 @@ router.post('/go',async function(req, res, next) {
         price: journeysList[i].price,
       }
     ) 
-
+    exist = true
+    res.render('journey', {journeyDispo});
      }
   
  }
 
+ if(exist == false){
+  
+  res.render('noTrain');
 
-    res.render('journey', {journeyDispo});
+ }
+
   });
 
 
